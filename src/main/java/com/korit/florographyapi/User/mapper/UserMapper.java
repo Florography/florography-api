@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
 
     void insert(User user);
-    User selectByProvider(String providerId);
+    User selectByProviderId(String providerId);
     User selectById(Long userId);
 }

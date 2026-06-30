@@ -10,7 +10,7 @@
         ( default, #{email}, #{nickname}, #{profileImage}, #{provider}, #{providerId}, #{createdAt} )
     </insert>
 
-    <select id="selectByProviderId" resultType="User">
+    <select id="selectByProviderId" resultType="com.korit.florographyapi.entity.User">
         select
         id,
         email,
@@ -25,7 +25,7 @@
         provider_id = #{providerId}
     </select>
 
-    <select id="selectById" resultType="User">
+    <select id="selectById" resultType="com.korit.florographyapi.entity.User">
         select
         id,
         email,
@@ -39,5 +39,6 @@
         where
         id = #{userId}
     </select>
+
 
 </mapper>

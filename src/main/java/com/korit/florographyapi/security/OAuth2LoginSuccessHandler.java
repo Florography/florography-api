@@ -31,7 +31,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         OAuth2User auth2User = (OAuth2User) authentication.getPrincipal();
 
         // 게정 생성 여부 체크
-        User user = userMapper.selectByProvider(auth2User.getName());
+        User user = userMapper.selectByProviderId(auth2User.getName());
 
         if(user == null){
             Map<String,Object> attributes = auth2User.getAttributes();
