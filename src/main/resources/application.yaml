@@ -1,3 +1,16 @@
 spring:
   application:
     name: florography-api
+  profiles:
+    include: secret
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.korit.florographyapi.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: 'NULL'
+
+app:
+  oauth2:
+    redirect-uri: http://localhost:5173/auth/oauth2/callback
