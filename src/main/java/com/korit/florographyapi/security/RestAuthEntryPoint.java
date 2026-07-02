@@ -22,7 +22,6 @@ public class RestAuthEntryPoint implements AuthenticationEntryPoint {
         response.setCharacterEncoding(StandardCharsets.UTF_8);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println("Hello");
         response.getWriter().println(objectMapper.writeValueAsString(ApiResponse.fail("인증 실패")));
     }
 

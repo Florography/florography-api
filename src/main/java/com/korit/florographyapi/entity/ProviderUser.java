@@ -5,18 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class ProviderUser {
     private Long id;
-    private String nickname;
     private String email;
-    private String profileImage;
-    private LocalDateTime createdAt;
-    private Long daysConnected;
-
+    private String provider;
+    private String providerId;
+    private LocalDate createdAt;
 }

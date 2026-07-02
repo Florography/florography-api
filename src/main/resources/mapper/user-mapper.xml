@@ -5,39 +5,28 @@
 
 <mapper namespace="com.korit.florographyapi.User.mapper.UserMapper">
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into users values
-        ( default, #{email}, #{nickname}, #{profileImage}, #{provider}, #{providerId}, #{createdAt} )
+    <insert id="insertProviderUser" useGeneratedKeys="true" keyProperty="id">
+        insert into provider_user values
+        ( default, #{email}, #{provider}, #{providerId}, #{createdAt} )
     </insert>
 
-    <select id="selectByProviderId" resultType="com.korit.florographyapi.entity.User">
-        select
-        id,
-        email,
-        nickname,
-        profile_image,
-        provider,
-        provider_id,
-        created_at
-        from
-        users
-        where
-        provider_id = #{providerId}
-    </select>
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" >
+        insert into user values
+        ( default, #{nickname}, #{email}, #{profileImage}, #{createdAt}, default )
+    </insert>
 
-    <select id="selectById" resultType="com.korit.florographyapi.entity.User">
+    <select id="selectByEmail" resultType="com.korit.florographyapi.entity.User">
         select
-        id,
-        email,
-        nickname,
-        profile_image,
-        provider,
-        provider_id,
-        created_at
+            id,
+            nickname,
+            email,
+            profile_image,
+            created_at,
+            days_connected
         from
-        users
+            users
         where
-        id = #{userId}
+            email=#{email}
     </select>
 
 

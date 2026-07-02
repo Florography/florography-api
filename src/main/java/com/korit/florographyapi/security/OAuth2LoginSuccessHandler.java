@@ -8,7 +8,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.session.DataSourceStore;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -28,23 +27,28 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
+        System.out.println("Insert Start");
         OAuth2User auth2User = (OAuth2User) authentication.getPrincipal();
 
+
         // 게정 생성 여부 체크
-        User user = userMapper.selectByProviderId(auth2User.getName());
+        User user = userMapper.selectByEmail(auth2User.getName());
 
         if(user == null){
             Map<String,Object> attributes = auth2User.getAttributes();
             user = User.builder()
-                    .email((String)attributes.get("email"))
-                    .name((String)attributes.get("nickname"))
-                    .profileImage((String)attributes.get("profileImage"))
-                    .provider((String)attributes.get("provider"))
-                    .providerId((String)attributes.get("providerId"))
+                    .nickname((String) attributes.get("nickname"))
+                    .email((String) attributes.get("email"))
+                    .profileImage((String) attributes.get("profileImage"))
                     .createdAt(LocalDateTime.now())
+                    .daysConnected(0l)
                     .build();
-            userMapper.insert(user);
+
+            // 생성하는 Mapper 메서드 삽입
+             userMapper.insertProviderUser(user);
+//            userMapper.insert(user);
         }
+
 
         String target = UriComponentsBuilder.fromUriString("http://localhost:5173/auth/oauth2/callback")
                 .queryParam("accessToken", jwtProvider.createToken(String.valueOf(user.getId())))
