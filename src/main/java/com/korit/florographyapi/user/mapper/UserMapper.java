@@ -1,4 +1,4 @@
-package com.korit.florographyapi.User.mapper;
+package com.korit.florographyapi.user.mapper;
 
 import com.korit.florographyapi.entity.ProviderUser;
 import com.korit.florographyapi.entity.User;
@@ -10,4 +10,5 @@ public interface UserMapper {
     void insertProviderUser(ProviderUser user);
     void insertUser(User user);
     ProviderUser selectByProviderId(String providerId);
+    User selectByUserEmail(String uid);
 }

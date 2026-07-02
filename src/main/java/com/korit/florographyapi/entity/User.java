@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class User {
     private Long id;
+    private String uid;
     private String nickname;
     private String email;
     private String profileImage;

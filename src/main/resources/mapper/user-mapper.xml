@@ -7,16 +7,18 @@
 
     <insert id="insertProviderUser" useGeneratedKeys="true" keyProperty="id">
         insert into provider_user values
-        ( default, #{email}, #{provider}, #{providerId}, #{createdAt} )
+        ( default, #{uid} ,#{email}, #{provider}, #{providerId}, #{createdAt} )
     </insert>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" >
         insert into user values
-        ( default, #{nickname}, #{email}, #{profileImage}, #{createdAt}, default )
+        ( default, #{nickname},  #{uid}, #{email}, #{profileImage}, #{createdAt}, default )
     </insert>
+
     <select id="selectByProviderId" resultType="com.korit.florographyapi.entity.ProviderUser">
         select
             id,
+            uid,
             email,
             provider,
             provider_id,
@@ -25,6 +27,21 @@
             provider_user
         where
             provider_id = #{provider_id}
+
+    </select>
+    <select id="selectByUserEmail" resultType="com.korit.florographyapi.entity.User">
+        select
+            id,
+            nickname,
+            uid,
+            email,
+            profile_image,
+            created_at,
+            days_connected
+        from
+            user
+        where
+            uid = #{uid}
 
     </select>
 

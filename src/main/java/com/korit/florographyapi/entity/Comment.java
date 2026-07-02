@@ -6,16 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class ProviderUser {
+@NoArgsConstructor
+public class Comment {
     private Long id;
     private String uid;
-    private String email;
-    private String provider;
-    private String providerId;
-    private LocalDate createdAt;
+    private String body;
+    private LocalDateTime createdAt;
 }
