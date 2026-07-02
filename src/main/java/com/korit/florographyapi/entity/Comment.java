@@ -1,11 +1,11 @@
 package com.korit.florographyapi.entity;
 
+
 import com.korit.florographyapi.comment.dto.CommentResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data

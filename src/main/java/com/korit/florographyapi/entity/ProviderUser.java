@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProviderUser {
     private Long id;
+    private String uid;
     private String email;
     private String provider;
     private String providerId;
