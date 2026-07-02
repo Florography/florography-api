@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.korit.florographyapi.User.mapper.UserMapper">
+<mapper namespace="com.korit.florographyapi.user.mapper.UserMapper">
 
     <insert id="insertProviderUser" useGeneratedKeys="true" keyProperty="id">
         insert into provider_user values
@@ -12,7 +12,7 @@
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" >
         insert into user values
-        ( default, #{nickname},  #{uid}, #{email}, #{profileImage}, #{createdAt}, default )
+        ( default,  #{uid}, #{nickname}, #{email}, #{profileImage}, #{createdAt}, default )
     </insert>
 
     <select id="selectByProviderId" resultType="com.korit.florographyapi.entity.ProviderUser">
@@ -29,7 +29,7 @@
             provider_id = #{provider_id}
 
     </select>
-    <select id="selectByUserEmail" resultType="com.korit.florographyapi.entity.User">
+    <select id="selectByUserId" resultType="com.korit.florographyapi.entity.User">
         select
             id,
             nickname,
@@ -45,21 +45,60 @@
 
     </select>
 
-    <!--    <select id="selectByEmail" resultType="com.korit.florographyapi.entity.User">-->
-<!--        select-->
-<!--            id,-->
-<!--            nickname,-->
-<!--            email,-->
-<!--            profile_image,-->
-<!--            created_at-->
-<!--            days_connected-->
-<!--        from-->
-<!--            user-->
-<!--        where-->
-<!--            email = #{email}-->
-<!--    </select>-->
-<!--    <select id="selectByEmail" resultType="com.korit.florographyapi.entity.User">-->
+    <select id="selectById" resultType="com.korit.florographyapi.entity.User">
+        select
+            id,
+            nickname,
+            uid,
+            email,
+            profile_image,
+            created_at,
+            days_connected
+        from
+            user
+        where
+            id = #{id}
+    </select>
 
-<!--    </select>-->
+    <select id="selectProvidersByUid" resultType="com.korit.florographyapi.entity.ProviderUser">
+        select
+            id,
+            uid,
+            email,
+            provider,
+            provider_id,
+            created_at
+        from
+            provider_user
+        where
+            uid = #{uid}
+    </select>
+
+    <select id="selectByProviderAndUid" resultType="com.korit.florographyapi.entity.ProviderUser">
+        select
+            id,
+            uid,
+            email,
+            provider,
+            provider_id,
+            created_at
+        from
+            provider_user
+        where
+            provider = #{provider}
+            and uid = #{uid}
+    </select>
+
+    <delete id="deleteProviderByProviderAndUid">
+        delete from provider_user
+        where provider = #{provider}
+        and uid = #{uid}
+    </delete>
+
+    <select id="countProvidersByUid" resultType="int">
+        select count(*)
+        from provider_user
+        where uid = #{uid}
+    </select>
 
 </mapper>

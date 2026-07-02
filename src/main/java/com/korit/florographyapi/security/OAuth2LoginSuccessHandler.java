@@ -1,12 +1,15 @@
 package com.korit.florographyapi.security;
 
+import com.korit.florographyapi.entity.LinkToken;
 import com.korit.florographyapi.user.mapper.UserMapper;
 import com.korit.florographyapi.entity.ProviderUser;
 import com.korit.florographyapi.entity.User;
 import com.korit.florographyapi.security.Jwt.JwtProvider;
+import com.korit.florographyapi.service.LinkTokenService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -25,6 +28,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     /// Mappers
     private final UserMapper userMapper;
     private final JwtProvider jwtProvider;
+    private final LinkTokenService linkTokenService;
 
     private static Long get64MostSignificantBitsForVersion1() {
         final long currentTimeMillis = System.currentTimeMillis();
@@ -39,18 +43,102 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         System.out.println("Insert Start");
         OAuth2User auth2User = (OAuth2User) authentication.getPrincipal();
+        Map<String, Object> attributes = auth2User.getAttributes();
+
+        // ★ 세션에서 link_token 확인 → 연동 모드인지 판별
+        String linkTokenValue = null;
+        HttpSession session = request.getSession(false);
+        System.out.println("세션 유무 확인: " + session);
+        if (session != null) {
+            linkTokenValue = (String) session.getAttribute(CustomAuthorizationRequestResolver.LINK_TOKEN_SESSION_KEY);
+            // 사용 후 즉시 제거
+            session.removeAttribute(CustomAuthorizationRequestResolver.LINK_TOKEN_SESSION_KEY);
+        }
+
+        if (linkTokenValue != null) {
+            // ===== 연동 모드 =====
+            handleAccountLinking(request, response, attributes, linkTokenValue);
+        } else {
+            // ===== 기존 로그인 모드 =====
+            handleLogin(request, response, attributes);
+        }
+    }
+
+    /**
+     * 소셜 계정 연동 처리
+     */
+    private void handleAccountLinking(HttpServletRequest request, HttpServletResponse response,
+                                       Map<String, Object> attributes, String linkTokenValue) throws IOException {
+
+        LinkToken linkToken = linkTokenService.validateAndConsume(linkTokenValue);
+
+        if (linkToken == null) {
+            // 토큰이 만료되었거나 유효하지 않음
+            String errorTarget = UriComponentsBuilder.fromUriString("http://localhost:5173/mypage")
+                    .queryParam("link", "error")
+                    .queryParam("reason", "invalid_token")
+                    .build().toUriString();
+            getRedirectStrategy().sendRedirect(request, response, errorTarget);
+            return;
+        }
+
+        String providerId = (String) attributes.get("providerId");
+        String provider = (String) attributes.get("provider");
+
+        // 이미 다른 계정에 연동된 providerId인지 확인
+        ProviderUser existing = userMapper.selectByProviderId(providerId);
+        if (existing != null) {
+            String errorTarget = UriComponentsBuilder.fromUriString("http://localhost:5173/mypage")
+                    .queryParam("link", "error")
+                    .queryParam("reason", "already_linked")
+                    .build().toUriString();
+            getRedirectStrategy().sendRedirect(request, response, errorTarget);
+            return;
+        }
+
+        // 같은 provider로 이미 연동되어 있는지 확인
+        ProviderUser duplicateProvider = userMapper.selectByProviderAndUid(provider, linkToken.getUid());
+        if (duplicateProvider != null) {
+            String errorTarget = UriComponentsBuilder.fromUriString("http://localhost:5173/mypage")
+                    .queryParam("link", "error")
+                    .queryParam("reason", "provider_already_linked")
+                    .build().toUriString();
+            getRedirectStrategy().sendRedirect(request, response, errorTarget);
+            return;
+        }
+
+        // 새 provider_user를 기존 uid에 추가
+        ProviderUser newProvider = ProviderUser.builder()
+                .uid(linkToken.getUid())
+                .email((String) attributes.get("email"))
+                .provider(provider)
+                .providerId(providerId)
+                .createdAt(LocalDate.now())
+                .build();
+        userMapper.insertProviderUser(newProvider);
+
+        System.out.println("소셜 계정 연동 완료: provider=" + provider + ", uid=" + linkToken.getUid());
+
+        String successTarget = UriComponentsBuilder.fromUriString("http://localhost:5173/mypage")
+                .queryParam("link", "success")
+                .queryParam("provider", provider)
+                .build().toUriString();
+        getRedirectStrategy().sendRedirect(request, response, successTarget);
+    }
+
+    /**
+     * 기존 로그인 처리 (변경 없음)
+     */
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response,
+                              Map<String, Object> attributes) throws IOException {
 
         // 게정 생성 여부 체크
-        System.out.println("유저 판별 여부:" + (String) auth2User.getAttributes().get("email"));
-        ProviderUser foundUser = userMapper.selectByProviderId((String) auth2User.getAttributes().get("providerId"));
+        System.out.println("유저 판별 여부:" + (String) attributes.get("email"));
+        ProviderUser foundUser = userMapper.selectByProviderId((String) attributes.get("providerId"));
         System.out.println("유저 존재 여부:" + foundUser);
-        Map<String,Object> attributes = auth2User.getAttributes();
         User user;
 
-        if(foundUser == null){
-            // 여기서 문제 발생 email을 기존의 것을 가져오는데, 만약 새로운 계정으로 로그인하려고 기존의 것으로 서치하다보니 문제가 생김.
-            // 그럼 그냥 고유 UID를 사용해서 유저를 분리해주는 것이 좋아보이는데...
-            // 있다가 의논해보는걸로
+        if (foundUser == null) {
             foundUser = ProviderUser.builder()
                     .uid(get64MostSignificantBitsForVersion1().toString())
                     .email((String) attributes.get("email"))
@@ -66,9 +154,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             user = User
                     .builder()
                     .uid(foundUser.getUid())
-                    .nickname((String)attributes.get("nickname"))
+                    .nickname((String) attributes.get("nickname"))
                     .email((String) attributes.get("email"))
-                    .profileImage((String)attributes.get("profileImage"))
+                    .profileImage((String) attributes.get("profileImage"))
                     .createdAt(LocalDateTime.now())
                     .daysConnected(0l)
                     .build();
@@ -78,18 +166,19 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
             // 새로운 유저 생성 완료
             System.out.println("새로운 유저 생성 완료: " + user.toString());
-        }
-        else {
-            user = userMapper.selectByUserEmail(foundUser.getUid());
-
+        } else {
+            System.out.println(foundUser.getUid());
+            user = userMapper.selectByUserId(foundUser.getUid());
             System.out.println("유저 발견!: " + user);
         }
 
         String target = UriComponentsBuilder.fromUriString("http://localhost:5173/auth/oauth2/callback")
                 .queryParam("accessToken", jwtProvider.createToken(String.valueOf(user.getId())))
                 .build().toUriString();
+//        String target = UriComponentsBuilder.fromUriString("http://localhost:8080/swagger-ui/index-html")
+//                .queryParam("accessToken", jwtProvider.createToken(String.valueOf(user.getId())))
+//                .build().toUriString();
 
         getRedirectStrategy().sendRedirect(request, response, target);
-
     }
 }
