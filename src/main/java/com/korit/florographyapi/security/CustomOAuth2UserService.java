@@ -52,7 +52,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         OAuth2User customOAuth2User = new DefaultOAuth2User(authorities, customAttributes, nameAttributeKey);
-
+        System.out.println("OAuth2UserSerrvice End");
         return customOAuth2User;
     }
 }

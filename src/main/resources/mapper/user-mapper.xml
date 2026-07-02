@@ -14,20 +14,35 @@
         insert into user values
         ( default, #{nickname}, #{email}, #{profileImage}, #{createdAt}, default )
     </insert>
-
-    <select id="selectByEmail" resultType="com.korit.florographyapi.entity.User">
+    <select id="selectByProviderId" resultType="com.korit.florographyapi.entity.ProviderUser">
         select
             id,
-            nickname,
             email,
-            profile_image,
-            created_at,
-            days_connected
+            provider,
+            provider_id,
+            created_at
         from
-            users
+            provider_user
         where
-            email=#{email}
+            provider_id = #{provider_id}
+
     </select>
 
+    <!--    <select id="selectByEmail" resultType="com.korit.florographyapi.entity.User">-->
+<!--        select-->
+<!--            id,-->
+<!--            nickname,-->
+<!--            email,-->
+<!--            profile_image,-->
+<!--            created_at-->
+<!--            days_connected-->
+<!--        from-->
+<!--            user-->
+<!--        where-->
+<!--            email = #{email}-->
+<!--    </select>-->
+<!--    <select id="selectByEmail" resultType="com.korit.florographyapi.entity.User">-->
+
+<!--    </select>-->
 
 </mapper>
