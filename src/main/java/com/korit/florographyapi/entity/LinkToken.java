@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private Long id;
+public class LinkToken {
+    private String token;
+    private Long userId;
     private String uid;
-    private String nickname;
-    private String email;
-    private String profileImage;
-    private LocalDateTime createdAt;
-    private Long daysConnected;
+    private LocalDateTime expiresAt;
 
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expiresAt);
+    }
 }

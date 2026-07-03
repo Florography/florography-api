@@ -1,7 +1,5 @@
-package com.korit.florographyapi.User.service;
+package com.korit.florographyapi.user.service;
 
-import com.korit.florographyapi.entity.ProviderUser;
-import com.korit.florographyapi.entity.User;
 import org.springframework.stereotype.Service;
 
 @Service

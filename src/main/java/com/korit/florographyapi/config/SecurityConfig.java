@@ -1,5 +1,6 @@
 package com.korit.florographyapi.config;
 
+import com.korit.florographyapi.security.CustomAuthorizationRequestResolver;
 import com.korit.florographyapi.security.CustomOAuth2UserService;
 import com.korit.florographyapi.security.Jwt.JwtFilter;
 import com.korit.florographyapi.security.OAuth2LoginSuccessHandler;
@@ -11,6 +12,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -28,6 +30,7 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final RestAuthEntryPoint restAuthEntryPoint;
+    private final ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
@@ -43,6 +46,11 @@ public class SecurityConfig {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.oauth2Login(oauth2 -> oauth2
+                .authorizationEndpoint(auth -> auth
+                        .authorizationRequestResolver(
+                                new CustomAuthorizationRequestResolver(clientRegistrationRepository)
+                        )
+                )
                 .userInfoEndpoint(ui -> ui.userService(customOAuth2UserService))
                 .successHandler(oAuth2LoginSuccessHandler)
         );

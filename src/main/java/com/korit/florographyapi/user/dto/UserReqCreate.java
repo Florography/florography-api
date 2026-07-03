@@ -1,4 +1,4 @@
-package com.korit.florographyapi.User.dto;
+package com.korit.florographyapi.user.dto;
 
 import lombok.Data;
 

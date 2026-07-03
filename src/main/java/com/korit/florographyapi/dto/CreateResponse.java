@@ -10,5 +10,4 @@ import java.util.List;
 public class CreateResponse {
     private String domainName;
     private List<Long> createdIds;
-
 }

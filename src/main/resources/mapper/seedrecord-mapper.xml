@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korit.florographyapi.seedrecord.mapper.SeedrecordMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into seedrecord values
+        (default, #{userId}, #{sentence}, #{moodIdx}, #{aiComment}, #{createdDate})
+    </insert>
+
+    <update id="update">
+        update
+            seedrecord
+        set
+            sentence = #{sentence}
+        where
+            user_id = #{userId}
+            and created_date = #{createdDate}
+    </update>
+
+    <select id="selectAllSeedrecord" resultType="com.korit.florographyapi.entity.Seedrecord">
+        select
+            id,
+            user_id,
+            sentence,
+            mood_idx,
+            ai_comment,
+            created_date
+        from
+            seedrecord
+        order by
+            created_date desc
+    </select>
+</mapper>
