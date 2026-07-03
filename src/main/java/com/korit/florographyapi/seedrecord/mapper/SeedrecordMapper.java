@@ -1,13 +1,13 @@
-package com.korit.florographyapi.comment.mapper;
+package com.korit.florographyapi.seedrecord.mapper;
 
-import com.korit.florographyapi.entity.Comment;
+import com.korit.florographyapi.entity.Seedrecord;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface CommentMapper {
-    int insert(Comment comment);
-    List<Comment> selectAllComment(Long userId);
-    int update(Comment comment);
+public interface SeedrecordMapper {
+    int insert(Seedrecord comment);
+    List<Seedrecord> selectAllSeedrecord(Long userId);
+    int update(Seedrecord comment);
 }

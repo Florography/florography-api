@@ -1,11 +1,11 @@
-package com.korit.florographyapi.comment.service;
+package com.korit.florographyapi.seedrecord.service;
 
-import com.korit.florographyapi.comment.dto.CommentCreateRequest;
-import com.korit.florographyapi.comment.dto.CommentModifyRequest;
-import com.korit.florographyapi.comment.dto.CommentResponse;
-import com.korit.florographyapi.comment.mapper.CommentMapper;
+import com.korit.florographyapi.seedrecord.dto.SeedrecordCreateRequest;
+import com.korit.florographyapi.seedrecord.dto.SeedrecordModifyRequest;
+import com.korit.florographyapi.seedrecord.dto.SeedrecordResponse;
+import com.korit.florographyapi.seedrecord.mapper.SeedrecordMapper;
 import com.korit.florographyapi.dto.CreateResponse;
-import com.korit.florographyapi.entity.Comment;
+import com.korit.florographyapi.entity.Seedrecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,28 +13,29 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
-    private final CommentMapper commentMapper;
+public class SeedrecordService {
+    private final SeedrecordMapper commentMapper;
     
-    public CreateResponse create(CommentCreateRequest dto) {
-        Comment comment = dto.toComment();
-        commentMapper.insert(comment);
+    public CreateResponse create(SeedrecordCreateRequest dto) {
+        Seedrecord seedrecord = dto.toSeedrecord();
+        System.out.println(seedrecord);
+        commentMapper.insert(seedrecord);
         
         return CreateResponse.builder()
                 .domainName("comment")
-                .createdIds(List.of(comment.getId()))
+                .createdIds(List.of(seedrecord.getId()))
                 .build();
     }
 
-    public List<CommentResponse> getAll(Long userId) {
-        return commentMapper.selectAllComment(userId)
+    public List<SeedrecordResponse> getAll(Long userId) {
+        return commentMapper.selectAllSeedrecord(userId)
                 .stream()
-                .map(Comment::toResponse)
+                .map(Seedrecord::toResponse)
                 .toList();
     }
 
-    public void modify(CommentModifyRequest dto) {
+    public void modify(SeedrecordModifyRequest dto) {
         System.out.println(dto);
-        commentMapper.update(dto.toComment());
+        commentMapper.update(dto.toSeedrecord());
     }
 }

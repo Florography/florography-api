@@ -1,28 +1,33 @@
 package com.korit.florographyapi.entity;
 
 
-import com.korit.florographyapi.comment.dto.CommentResponse;
+import com.korit.florographyapi.seedrecord.dto.SeedrecordResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Seedrecord {
     private Long id;
-    private Long userId;
-    private String body;
-    private LocalDateTime createdAt;
+    private String userId;
+    private String sentence;
+    private int moodIdx;
+    private String aiComment;
+    private LocalDate createdDate;
 
-    public CommentResponse toResponse() {
-        return CommentResponse.builder()
+    public SeedrecordResponse toResponse() {
+        return SeedrecordResponse.builder()
                 .userId(userId)
-                .body(body)
-                .createdAt(createdAt)
+                .sentence(sentence)
+                .moodIdx(moodIdx)
+                .aiComment(aiComment)
+                .createdDate(createdDate)
                 .build();
     }
 }

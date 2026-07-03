@@ -3,32 +3,34 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.korit.florographyapi.comment.mapper.CommentMapper">
+<mapper namespace="com.korit.florographyapi.seedrecord.mapper.SeedrecordMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into comment values
-        (default, #{userId}, #{body}, #{createdAt})
+        insert into seedrecord values
+        (default, #{userId}, #{sentence}, #{moodIdx}, #{aiComment}, #{createdDate})
     </insert>
 
     <update id="update">
         update
-            comment
+            seedrecord
         set
-            body = #{body}
+            sentence = #{sentence}
         where
             user_id = #{userId}
-            and created_at = #{createdAt}
+            and created_date = #{createdDate}
     </update>
 
-    <select id="selectAllComment" resultType="com.korit.florographyapi.entity.Comment">
+    <select id="selectAllSeedrecord" resultType="com.korit.florographyapi.entity.Seedrecord">
         select
             id,
             user_id,
-            body,
-            created_at
+            sentence,
+            mood_idx,
+            ai_comment,
+            created_date
         from
-            comment
+            seedrecord
         order by
-            created_at desc
+            created_date desc
     </select>
 </mapper>

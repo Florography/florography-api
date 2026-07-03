@@ -1,21 +1,25 @@
-package com.korit.florographyapi.comment.dto;
+package com.korit.florographyapi.seedrecord.dto;
 
-import com.korit.florographyapi.entity.Comment;
+import com.korit.florographyapi.entity.Seedrecord;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
-public class CommentCreateRequest {
-    private Long userId;
-    private String body;
-    private LocalDateTime createdAt;
+public class SeedrecordCreateRequest {
+    private String userId;
+    private String sentence;
+    private int moodIdx;
+    private String aiComment;
+    private LocalDate createdDate;
 
-    public Comment toComment() {
-        return Comment.builder()
+    public Seedrecord toSeedrecord() {
+        return Seedrecord.builder()
                 .userId(userId)
-                .body(body)
-                .createdAt(LocalDateTime.now())
+                .sentence(sentence)
+                .moodIdx(moodIdx)
+                .aiComment(aiComment)
+                .createdDate(LocalDate.now())
                 .build();
     }
 }
