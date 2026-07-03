@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korit.florographyapi.plantStatus.mapper.PlantStatusMapper">
+    <insert id="insertPlants">
+        insert into plantstatus values(default, #{userId}, 1, 0, 0);
+    </insert>
+
+    <select id="SelectByUserId">
+        select
+            id,
+            user_id,
+            days_count
+            stage,
+            health
+        from
+            plantstatus
+        where
+            user_id = #{userId}
+
+
+    </select>
+</mapper>

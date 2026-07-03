@@ -1,6 +1,8 @@
 package com.korit.florographyapi.security;
 
 import com.korit.florographyapi.entity.LinkToken;
+import com.korit.florographyapi.entity.PlantStatus;
+import com.korit.florographyapi.plantStatus.mapper.PlantStatusMapper;
 import com.korit.florographyapi.user.mapper.UserMapper;
 import com.korit.florographyapi.entity.ProviderUser;
 import com.korit.florographyapi.entity.User;
@@ -28,6 +30,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     /// Mappers
     private final UserMapper userMapper;
     private final JwtProvider jwtProvider;
+    private final PlantStatusMapper plantStatusMapper;
     private final LinkTokenService linkTokenService;
 
     private static Long get64MostSignificantBitsForVersion1() {
@@ -126,18 +129,18 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         getRedirectStrategy().sendRedirect(request, response, successTarget);
     }
 
-    /**
-     * 기존 로그인 처리 (변경 없음)
-     */
-    private void handleLogin(HttpServletRequest request, HttpServletResponse response,
-                              Map<String, Object> attributes) throws IOException {
+    // Boolean 여부로 PlantStatus가 존재하는지 파악하고 없으면 새로운 데이터를 삽입하는 기능
+    private void CheckPlant(String userId){
+        PlantStatus[] foundPlants = plantStatusMapper.SelectByUserId(userId);
+        System.out.println(foundPlants.length);
+        if(foundPlants.length == 0){
+            plantStatusMapper.insertPlants(userId);
+        }
+    }
 
-        // 게정 생성 여부 체크
-        System.out.println("유저 판별 여부:" + (String) attributes.get("email"));
+    private User CheckFoundUser(Map<String, Object> attributes){
+        User user = null;
         ProviderUser foundUser = userMapper.selectByProviderId((String) attributes.get("providerId"));
-        System.out.println("유저 존재 여부:" + foundUser);
-        User user;
-
         if (foundUser == null) {
             foundUser = ProviderUser.builder()
                     .uid(get64MostSignificantBitsForVersion1().toString())
@@ -163,7 +166,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
             // 유저 생성
             userMapper.insertUser(user);
-
             // 새로운 유저 생성 완료
             System.out.println("새로운 유저 생성 완료: " + user.toString());
         } else {
@@ -172,13 +174,65 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             System.out.println("유저 발견!: " + user);
         }
 
-        String target = UriComponentsBuilder.fromUriString("http://localhost:5173/auth/oauth2/callback")
-                .queryParam("accessToken", jwtProvider.createToken(String.valueOf(user.getId())))
-                .build().toUriString();
-//        String target = UriComponentsBuilder.fromUriString("http://localhost:8080/swagger-ui/index-html")
-//                .queryParam("accessToken", jwtProvider.createToken(String.valueOf(user.getId())))
-//                .build().toUriString();
+        CheckPlant(user.getUid());
 
-        getRedirectStrategy().sendRedirect(request, response, target);
+        return user;
+    }
+
+    /**
+     * 기존 로그인 처리 (변경 없음)
+     */
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response,
+                              Map<String, Object> attributes) throws IOException {
+
+        // 게정 생성 여부 체크
+        System.out.println("유저 판별 여부:" + (String) attributes.get("email"));
+        User user ;
+//        try{
+            user = CheckFoundUser(attributes);
+//        if (foundUser == null) {
+//            foundUser = ProviderUser.builder()
+//                    .uid(get64MostSignificantBitsForVersion1().toString())
+//                    .email((String) attributes.get("email"))
+//                    .provider((String) attributes.get("provider"))
+//                    .providerId((String) attributes.get("providerId"))
+//                    .createdAt(LocalDate.now()).build();
+//
+//            // 생성하는 Mapper 메서드 삽입
+//            userMapper.insertProviderUser(foundUser);
+//            // 여기서 plantstatus 생성
+//            CheckPlant()
+//
+//            // 그 전에 새로운 계정을 생성할 것인지 여부부터 체크해야함.
+//            // 일단 그건 명세서에 없으니 뺀 상태로 진행
+//            user = User
+//                    .builder()
+//                    .uid(foundUser.getUid())
+//                    .nickname((String) attributes.get("nickname"))
+//                    .email((String) attributes.get("email"))
+//                    .profileImage((String) attributes.get("profileImage"))
+//                    .createdAt(LocalDateTime.now())
+//                    .daysConnected(0l)
+//                    .build();
+//
+//            // 유저 생성
+//            userMapper.insertUser(user);
+//
+//            // 새로운 유저 생성 완료
+//            System.out.println("새로운 유저 생성 완료: " + user.toString());
+//        } else {
+//            System.out.println(foundUser.getUid());
+//            user = userMapper.selectByUserId(foundUser.getUid());
+//            System.out.println("유저 발견!: " + user);
+//        }
+            String target = UriComponentsBuilder.fromUriString("http://localhost:5173/auth/oauth2/callback")
+                    .queryParam("accessToken", jwtProvider.createToken(String.valueOf(user.getId())))
+                    .build().toUriString();
+
+            getRedirectStrategy().sendRedirect(request, response, target);
+/*        } catch (Exception error){
+            System.out.println("문제 발생");
+        }*/
+
     }
 }
