@@ -2,10 +2,17 @@ package com.korit.florographyapi.entity;
 
 
 import com.korit.florographyapi.ShareBoard.dto.ShareBoardResponse;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ShareBoard {
     private Long id;                 //게시글 id
     private Long userId;             // 유저 id

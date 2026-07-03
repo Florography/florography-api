@@ -4,11 +4,11 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace= "com.korit.florographyapi.ShareBoard.mapper.ShareBoardMapper" >
 
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into share_board values
-        (default, #{user_id}, #{type_id}, #{body}, #{like}, #{created_at})
+        (default, #{userId}, #{typeId}, #{body}, #{like}, #{createdAt})
     </insert>
-
+<!--게시글 아이디로 본인꺼 출력-->
     <select id="selectByUserId" resultType="com.korit.florographyapi.entity.ShareBoard">
         select
             id,
@@ -22,7 +22,7 @@
         where
             user_id = #{userId}
     </select>
-
+<!--게시글 전체 출력-->
     <select id="selectAll" resultType="com.korit.florographyapi.entity.ShareBoard">
         SELECT
             id,
@@ -45,7 +45,7 @@
         ORDER BY
             created_at DESC
     </select>
-
+<!--인기순위-->
     <select id="selectRank" resultType="com.korit.florographyapi.entity.ShareBoard">
         select
             id,
