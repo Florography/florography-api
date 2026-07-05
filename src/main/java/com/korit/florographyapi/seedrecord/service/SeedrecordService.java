@@ -28,10 +28,12 @@ public class SeedrecordService {
     }
 
     public List<SeedrecordResponse> getAll(Long userId) {
-        return commentMapper.selectAllSeedrecord(userId)
+        List<SeedrecordResponse> comments = commentMapper.selectAllSeedrecord(userId)
                 .stream()
                 .map(Seedrecord::toResponse)
                 .toList();
+        System.out.println(comments);
+        return comments;
     }
 
     public void modify(SeedrecordModifyRequest dto) {

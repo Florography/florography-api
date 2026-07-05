@@ -29,11 +29,16 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String accessToken = authorization.substring(7);
-            Jws<Claims> claimsJwt = jwtProvider.parseAndValidate(accessToken);
-            Long userId = Long.valueOf(claimsJwt.getPayload().getId());
+            try {
+                Jws<Claims> claimsJwt = jwtProvider.parseAndValidate(accessToken);
+                Long userId = Long.valueOf(claimsJwt.getPayload().getId());
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(userId, "", List.of(new SimpleGrantedAuthority("ROLE_USER")));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userId, "", List.of(new SimpleGrantedAuthority("ROLE_USER")));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (io.jsonwebtoken.JwtException e) {
+                // 토큰이 만료되었거나 유효하지 않은 경우 무시
+                // SecurityContext에 인증 정보가 들어가지 않으므로 Spring Security가 알아서 401(Unauthorized) 또는 403 처리를 합니다.
+            }
         }
         filterChain.doFilter(request, response);
     }

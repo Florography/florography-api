@@ -21,6 +21,8 @@ public class Seedrecord {
     private String aiComment;
     private LocalDate createdDate;
 
+    public Mood mood;
+
     public SeedrecordResponse toResponse() {
         return SeedrecordResponse.builder()
                 .userId(userId)
@@ -28,6 +30,7 @@ public class Seedrecord {
                 .moodIdx(moodIdx)
                 .aiComment(aiComment)
                 .createdDate(createdDate)
+                .mood(mood)
                 .build();
     }
 }
