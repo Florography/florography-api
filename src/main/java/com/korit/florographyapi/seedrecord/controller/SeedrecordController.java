@@ -11,7 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/seedrecord")
 @RequiredArgsConstructor
 public class SeedrecordController {
     private final SeedrecordService commentService;
@@ -23,6 +23,7 @@ public class SeedrecordController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<?>> getAll(@AuthenticationPrincipal Long userId) {
+        System.out.println("seedRecord: getAll Start");
         return ResponseEntity.ok(ApiResponse.success(commentService.getAll(userId)));
     }
 

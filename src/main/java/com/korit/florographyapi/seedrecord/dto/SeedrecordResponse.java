@@ -1,5 +1,6 @@
 package com.korit.florographyapi.seedrecord.dto;
 
+import com.korit.florographyapi.entity.Mood;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,4 +14,5 @@ public class SeedrecordResponse {
     private int moodIdx;
     private String aiComment;
     private LocalDate createdDate;
+    private Mood mood;
 }

@@ -4,6 +4,21 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.korit.florographyapi.seedrecord.mapper.SeedrecordMapper">
+    
+    <resultMap id="SeedRecordResultMap" type="com.korit.florographyapi.entity.Seedrecord">
+        <id property="id" column="seedrecord_id" />
+        <result property="userId" column="user_id" />
+        <result property="sentence" column="sentence"/>
+        <result property="moodIdx" column="mood_idx"/>
+        <result property="aiComment" column="ai_comment"/>
+        <result property="createdDate" column="created_date"/>
+        <association property="mood" resultMap="MoodResultMap"/>
+    </resultMap>
+    
+    <resultMap id="MoodResultMap" type="com.korit.florographyapi.entity.Mood">
+        <id property="id" column="mood_id"/>
+        <result property="mood" column="mood_name"/>
+    </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into seedrecord values
@@ -20,16 +35,20 @@
             and created_date = #{createdDate}
     </update>
 
-    <select id="selectAllSeedrecord" resultType="com.korit.florographyapi.entity.Seedrecord">
+    <select id="selectAllSeedrecord" resultMap="SeedRecordResultMap">
         select
-            id,
-            user_id,
-            sentence,
-            mood_idx,
-            ai_comment,
-            created_date
+            s.id as seedrecord_id,
+            s.user_id,
+            s.sentence,
+            s.mood_idx,
+            s.ai_comment,
+            s.created_date,
+
+            m.id as mood_id,
+            m.mood as mood_name
         from
-            seedrecord
+            seedrecord s
+            left join mood m on m.id = s.mood_idx
         order by
             created_date desc
     </select>
