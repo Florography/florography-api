@@ -11,8 +11,8 @@
     <select id="selectByBoardId" resultType="com.korit.florographyapi.entity.Comment">
         select
             id,
-            board_id,
-            user_id,
+            board_id as boardId,
+            user_id as userId,
             body,
             created_at
         from
