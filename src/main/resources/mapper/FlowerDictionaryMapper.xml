@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korit.florographyapi.flowerdictionary.mapper.FlowerDictionaryMapper">
+    <resultMap id="FlowerDictionaryResultMap" type="com.korit.florographyapi.entity.FlowerDictionary" >
+        <id property="id" column="flower_id"/>
+        <result  property="flowerImg" column="flower_img"/>
+        <result property="flowerName" column="flower_name"/>
+        <result property="flowerMeaning" column="flower_meaning"/>
+        <result property="kindWords" column="kind_words"/>
+        <association property="userFlower" resultMap="UserFlowerResultMap" />
+    </resultMap>
+    
+    <resultMap id="UserFlowerResultMap" type="com.korit.florographyapi.entity.UserFlower">
+        <id property="id" column="userflower_id" />
+        <result property="userId" column="user_id"/>
+        <result property="flowerId" column="flower_id"/>
+        <result property="openedAt" column="opened_at"/>
+    </resultMap>
+
+    <select id="getAll" resultType="com.korit.florographyapi.entity.FlowerDictionary">
+        select
+            fd.id ,
+            fd.flower_img,
+            fd.flower_name,
+            fd.flower_meaning,
+            fd.kind_words,
+
+            uf.id as userflowers_id,
+            uf.user_id,
+            uf.flower_id,
+            uf.opened_at
+        from
+            flower_dictionary as fd
+            left join user_flower as uf on uf.flower_id = fd.id and uf.user_id = #{userId}
+
+    </select>
+</mapper>
