@@ -1,6 +1,7 @@
 package com.korit.florographyapi.ShareBoard.service;
 
 import com.korit.florographyapi.ShareBoard.dto.CommentCreateRequest;
+import com.korit.florographyapi.ShareBoard.dto.CommentModifyRequest;
 import com.korit.florographyapi.ShareBoard.dto.CommentResponse;
 import com.korit.florographyapi.ShareBoard.mapper.CommentMapper;
 import com.korit.florographyapi.dto.CreateResponse;
@@ -27,4 +28,10 @@ public class CommentService {
     public List<CommentResponse> getSelectByBoardId(Long boardId) {
         return commentMapper.selectByBoardId(boardId).stream().map(Comment::toResponse).toList();
     }
+
+    public void modify(CommentModifyRequest dto) {
+        commentMapper.update(dto.toComment());
+    }
+
+    public void delete(Long boardId, Long userId, Long id ) {commentMapper.delete(boardId,userId, id);}
 }

@@ -1,6 +1,7 @@
 package com.korit.florographyapi.ShareBoard.service;
 
 import com.korit.florographyapi.ShareBoard.dto.ShareBoardCreateRequest;
+import com.korit.florographyapi.ShareBoard.dto.ShareBoardModifyRequest;
 import com.korit.florographyapi.ShareBoard.dto.ShareBoardResponse;
 import com.korit.florographyapi.ShareBoard.mapper.ShareBoardMapper;
 import com.korit.florographyapi.dto.CreateResponse;
@@ -37,4 +38,10 @@ public class ShareBoardService {
     public List<ShareBoardResponse> getRank(Long userId) {
         return shareBoardMapper.selectRank(userId).stream().map(ShareBoard::toResponse).toList();
     }
+
+    public void modify(ShareBoardModifyRequest dto) {
+        shareBoardMapper.update(dto.toShareBoard());
+    }
+
+    public void delete(Long id, Long userId) {shareBoardMapper.delete(id,userId);}
 }

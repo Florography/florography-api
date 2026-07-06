@@ -11,6 +11,8 @@ public interface ShareBoardMapper {
     List<ShareBoard> selectByUserId(Long userId);
     List<ShareBoard> selectAll();
     List<ShareBoard> selectRank(Long userId);
+    int update(ShareBoard shareBoard);
+    int delete(Long id, Long userId);
 
 
 }

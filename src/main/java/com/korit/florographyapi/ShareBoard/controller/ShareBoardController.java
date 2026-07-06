@@ -1,6 +1,7 @@
 package com.korit.florographyapi.ShareBoard.controller;
 
 import com.korit.florographyapi.ShareBoard.dto.ShareBoardCreateRequest;
+import com.korit.florographyapi.ShareBoard.dto.ShareBoardModifyRequest;
 import com.korit.florographyapi.ShareBoard.dto.ShareBoardResponse;
 import com.korit.florographyapi.ShareBoard.service.ShareBoardService;
 import com.korit.florographyapi.dto.ApiResponse;
@@ -37,6 +38,17 @@ public class ShareBoardController {
     @GetMapping("/rank")
     public ResponseEntity<ApiResponse<List<ShareBoardResponse>>> getRank(@AuthenticationPrincipal Long userId) {
         return ResponseEntity.ok(ApiResponse.success(shareBoardService.getRank(userId)));
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<ApiResponse<?>> modify(@PathVariable Long userId, @RequestBody ShareBoardModifyRequest dto) {
+        shareBoardService.modify(dto);
+        return ResponseEntity.ok(ApiResponse.success("수정완료"));
+    }
+    @DeleteMapping("/{id}/{userId}")
+    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id, @PathVariable Long userId) {
+        shareBoardService.delete(id, userId);
+        return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }
 
 

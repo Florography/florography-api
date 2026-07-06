@@ -34,12 +34,14 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http.cors(cors -> Customizer.withDefaults());
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         http.exceptionHandling(ex -> ex
                 .defaultAuthenticationEntryPointFor(
                         restAuthEntryPoint,
                         request -> request.getRequestURI().startsWith("/api")
                 )
         );
+
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.oauth2Login(oauth2 -> oauth2

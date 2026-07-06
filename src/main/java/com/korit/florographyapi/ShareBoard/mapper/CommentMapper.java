@@ -9,4 +9,6 @@ import java.util.List;
 public interface CommentMapper {
     int insert (Comment comment);
     List<Comment> selectByBoardId(Long boardId);
+    int update (Comment comment);
+    int delete (Long boardId,Long userId, Long id);
 }

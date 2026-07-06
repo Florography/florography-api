@@ -8,7 +8,7 @@
         insert into share_board values
         (default, #{userId}, #{typeId}, #{body}, #{like}, #{createdAt})
     </insert>
-<!--게시글 아이디로 본인꺼 출력-->
+    <!--게시글 아이디로 본인꺼 출력-->
     <select id="selectByUserId" resultType="com.korit.florographyapi.entity.ShareBoard">
         select
             id,
@@ -68,5 +68,25 @@
             created_at desc
             limit 5
     </select>
+
+    <update id="update">
+        update
+            share_board
+        set
+            body = #{body}
+        where
+            id = #{id}
+        and
+            user_id = #{userId}
+    </update>
+    <delete id="delete">
+        delete
+        from
+            share_board
+        where
+            id = #{id}
+        and
+            user_id = #{userId}
+    </delete>
 
 </mapper>
