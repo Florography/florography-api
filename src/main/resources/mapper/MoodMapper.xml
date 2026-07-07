@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korit.florographyapi.mood.mapper.MoodMapper">
+    <insert id="insert">
+        insert into mood values
+        (default, #{mood})
+    </insert>
+    <select id="selectAll" resultType="com.korit.florographyapi.entity.Mood">
+        select
+            id,
+            mood
+        from
+            mood
+    </select>
+</mapper>
