@@ -60,6 +60,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(req -> {
             req.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/auth/**").permitAll();
             req.requestMatchers("/api/shareboard", "/api/shareboard/", "/api/shareboard/**").permitAll();// shareboard 토큰없이 확인하기 위해 넣은것임
+            req.requestMatchers("/api/mood", "/api/seedrecord", "/api/seedrecord/**").permitAll();
             req.requestMatchers("/", "/login", "/login/**", "/oauth2/**").permitAll();
 
             req.anyRequest().authenticated();

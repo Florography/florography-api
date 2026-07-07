@@ -72,6 +72,7 @@ public class UserService {
         // providerId 같은 민감 정보는 제외하고 provider, email만 반환
         List<Map<String, String>> result = providers.stream()
                 .map(p -> Map.of(
+                        "uid", user.getUid(),
                         "provider", p.getProvider(),
                         "nickname", user.getNickname(),
                         "email", p.getEmail() != null ? p.getEmail() : ""

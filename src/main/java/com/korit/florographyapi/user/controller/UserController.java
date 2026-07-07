@@ -4,7 +4,6 @@ import com.korit.florographyapi.dto.ApiResponse;
 import com.korit.florographyapi.entity.ProviderUser;
 import com.korit.florographyapi.entity.User;
 import com.korit.florographyapi.service.LinkTokenService;
-import com.korit.florographyapi.user.mapper.UserMapper;
 import com.korit.florographyapi.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,6 @@ import java.util.Set;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
-    private final UserMapper userMapper;
-    private final LinkTokenService linkTokenService;
 
 
     /**
