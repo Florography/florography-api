@@ -2,6 +2,7 @@ package com.korit.florographyapi.seedrecord.controller;
 
 import com.korit.florographyapi.entity.Seedrecord;
 import com.korit.florographyapi.seedrecord.dto.SeedrecordModifyRequest;
+import com.korit.florographyapi.seedrecord.dto.SeedrecordResponse;
 import com.korit.florographyapi.seedrecord.service.SeedrecordService;
 import com.korit.florographyapi.dto.ApiResponse;
 import com.korit.florographyapi.dto.CreateResponse;
@@ -12,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/seedrecord")
 @RequiredArgsConstructor
@@ -21,14 +24,17 @@ public class SeedrecordController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<CreateResponse>> create(@RequestBody SeedrecordCreateRequest dto) {
-
         return ResponseEntity.ok(ApiResponse.success(seedrecordService.create(dto)));
     }
 
-    @GetMapping
+    @GetMapping("/getall")
     public ResponseEntity<ApiResponse<?>> getAll(@AuthenticationPrincipal Long userId) {
-        System.out.println("seedRecord: getAll Start");
         return ResponseEntity.ok(ApiResponse.success(seedrecordService.getAll(userId)));
+    }
+
+    @GetMapping("/getuser")
+    public ResponseEntity<ApiResponse<List<SeedrecordResponse>>> getByUserId(@RequestParam String userId) {
+        return ResponseEntity.ok(ApiResponse.success(seedrecordService.getByUserId(userId)));
     }
 
     @PutMapping
