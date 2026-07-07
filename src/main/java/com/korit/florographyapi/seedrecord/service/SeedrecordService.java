@@ -7,28 +7,36 @@ import com.korit.florographyapi.seedrecord.mapper.SeedrecordMapper;
 import com.korit.florographyapi.dto.CreateResponse;
 import com.korit.florographyapi.entity.Seedrecord;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SeedrecordService {
-    private final SeedrecordMapper commentMapper;
+    private final SeedrecordMapper seedrecordMapper;
     
     public CreateResponse create(SeedrecordCreateRequest dto) {
-        Seedrecord seedrecord = dto.toSeedrecord();
-        System.out.println(seedrecord);
-        commentMapper.insert(seedrecord);
+        Seedrecord seedrecord = Seedrecord.builder()
+                .userId(dto.getUserId())
+                .sentence(dto.getSentence())
+                .moodIdx(dto.getMoodIdx())
+                .aiComment("가나다라")
+                .createdDate(LocalDate.now())
+                .build();
+        System.out.println(dto);
+        seedrecordMapper.insert(seedrecord);
         
         return CreateResponse.builder()
                 .domainName("comment")
-                .createdIds(List.of(seedrecord.getId()))
+                .createdIds(null)
                 .build();
     }
 
     public List<SeedrecordResponse> getAll(Long userId) {
-        List<SeedrecordResponse> comments = commentMapper.selectAllSeedrecord(userId)
+        List<SeedrecordResponse> comments = seedrecordMapper.selectAllSeedrecord(userId)
                 .stream()
                 .map(Seedrecord::toResponse)
                 .toList();
@@ -38,6 +46,6 @@ public class SeedrecordService {
 
     public void modify(SeedrecordModifyRequest dto) {
         System.out.println(dto);
-        commentMapper.update(dto.toSeedrecord());
+        seedrecordMapper.update(dto.toSeedrecord());
     }
 }
