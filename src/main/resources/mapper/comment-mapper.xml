@@ -11,8 +11,8 @@
     <select id="selectByBoardId" resultType="com.korit.florographyapi.entity.Comment">
         select
             id,
-            board_id,
-            user_id,
+            board_id as boardId,
+            user_id as userId,
             body,
             created_at
         from
@@ -22,5 +22,28 @@
         order by
             created_at desc
     </select>
+
+    <update id="update">
+        update
+            comment
+        set
+            body = #{body}
+        where
+            id = #{id}
+        and
+            user_id = #{userId}
+    </update>
+
+    <delete id="delete">
+        delete
+        from
+            comment
+        where
+            id = #{id}
+        and
+            board_id = #{boardId}
+        and
+            user_id = #{userId}
+    </delete>
 
 </mapper>

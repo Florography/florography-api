@@ -37,12 +37,14 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http.cors(cors -> Customizer.withDefaults());
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         http.exceptionHandling(ex -> ex
                 .defaultAuthenticationEntryPointFor(
                         restAuthEntryPoint,
                         request -> request.getRequestURI().startsWith("/api")
                 )
         );
+
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.oauth2Login(oauth2 -> oauth2
@@ -56,9 +58,10 @@ public class SecurityConfig {
         );
 
         http.authorizeHttpRequests(req -> {
-            req.requestMatchers("/", "/login", "/login/**", "/oauth2/**").permitAll();
             req.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/auth/**").permitAll();
-            req.requestMatchers("/api/**").permitAll(); // shareboard 토큰없이 확인하기 위해 넣은것임
+            req.requestMatchers("/api/shareboard", "/api/shareboard/", "/api/shareboard/**").permitAll();// shareboard 토큰없이 확인하기 위해 넣은것임
+            req.requestMatchers("/", "/login", "/login/**", "/oauth2/**").permitAll();
+
             req.anyRequest().authenticated();
         });
 

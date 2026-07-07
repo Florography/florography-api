@@ -23,6 +23,7 @@ public class ShareBoard {
 
     public ShareBoardResponse toResponse() {
         return ShareBoardResponse.builder()
+                .id(id)
                 .userId(userId)
                 .typeId(typeId)
                 .body(body)

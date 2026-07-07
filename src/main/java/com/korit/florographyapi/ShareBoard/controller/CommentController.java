@@ -1,6 +1,7 @@
 package com.korit.florographyapi.ShareBoard.controller;
 
 import com.korit.florographyapi.ShareBoard.dto.CommentCreateRequest;
+import com.korit.florographyapi.ShareBoard.dto.CommentModifyRequest;
 import com.korit.florographyapi.ShareBoard.dto.CommentResponse;
 import com.korit.florographyapi.ShareBoard.service.CommentService;
 import com.korit.florographyapi.dto.ApiResponse;
@@ -26,5 +27,17 @@ public class CommentController {
     @GetMapping("/{boardId}")
     public ResponseEntity<ApiResponse<List<CommentResponse>>> getSelectByBoardId(@PathVariable Long boardId) {
         return ResponseEntity.ok(ApiResponse.success(commentService.getSelectByBoardId(boardId)));
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<ApiResponse<?>> modify(@PathVariable Long userId, @RequestBody CommentModifyRequest dto) {
+        commentService.modify(dto);
+        return ResponseEntity.ok(ApiResponse.success("수정완료"));
+    }
+
+    @DeleteMapping("/{boardId}/{userId}/{id}")
+    public ResponseEntity<ApiResponse<?>> delelte(@PathVariable Long boardId,@PathVariable Long userId  ,@PathVariable Long id ) {
+        commentService.delete(boardId,userId,id);
+        return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }
 }
