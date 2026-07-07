@@ -48,4 +48,13 @@ public class SeedrecordService {
         System.out.println(dto);
         seedrecordMapper.update(dto.toSeedrecord());
     }
+
+    public List<SeedrecordResponse> getByUserId(String userId) {
+        List<SeedrecordResponse> seedrecordResponseList = seedrecordMapper.selectByUserId(userId)
+                .stream()
+                .map(Seedrecord::toResponse)
+                .toList();
+        System.out.println(seedrecordResponseList);
+        return seedrecordResponseList;
+    }
 }

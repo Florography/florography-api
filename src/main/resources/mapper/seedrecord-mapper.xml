@@ -52,4 +52,22 @@
         order by
             created_date desc
     </select>
+    <select id="selectByUserId" resultMap="SeedRecordResultMap">
+        select
+            s.user_id,
+            s.sentence,
+            s.mood_idx,
+            s.ai_comment,
+            s.created_date,
+
+            m.id as mood_id,
+            m.mood as mood_name
+        from
+            seedrecord s
+            left join mood m on m.id = s.mood_idx
+        where
+            user_id = #{userId}
+    </select>
+
+
 </mapper>
