@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class ShareBoardModifyRequest {
     private Long id;
-    private long userId;
+    private String userId;
     private short typeId;
     private String body;
     private Long like;

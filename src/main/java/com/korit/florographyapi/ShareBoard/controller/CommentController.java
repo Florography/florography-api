@@ -14,13 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shareboard/comment")
+@RequestMapping("/api/shareboard/comments")
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CreateResponse>> create(@RequestBody CommentCreateRequest dto) {
+    public ResponseEntity<ApiResponse<CreateResponse>> create(@RequestBody CommentCreateRequest dto, @AuthenticationPrincipal Object principal) {
+
+        System.out.println("토큰에서 자동으로 매핑된 진짜 로그인 유저 ID: " + dto.getUserId());
         return ResponseEntity.ok(ApiResponse.success(commentService.create(dto)));
     }
 
@@ -36,7 +38,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{boardId}/{userId}/{id}")
-    public ResponseEntity<ApiResponse<?>> delelte(@PathVariable Long boardId,@PathVariable Long userId  ,@PathVariable Long id ) {
+    public ResponseEntity<ApiResponse<?>> delelte(@PathVariable Long boardId,@PathVariable String userId  ,@PathVariable Long id ) {
         commentService.delete(boardId,userId,id);
         return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }

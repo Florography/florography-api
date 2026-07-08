@@ -15,12 +15,13 @@ import java.time.LocalDateTime;
 public class Comment {
     private Long id;
     private Long boardId;
-    private Long userId;
+    private String userId;
     private String body;
     private LocalDateTime createdAt;
 
     public CommentResponse toResponse() {
         return CommentResponse.builder()
+                .id(id)
                 .boardId(boardId)
                 .userId(userId)
                 .body(body)

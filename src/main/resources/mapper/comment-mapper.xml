@@ -22,6 +22,14 @@
         order by
             created_at desc
     </select>
+    <select id="selectById" resultType="java.lang.Integer">
+        select
+            id,
+            board_id,
+        from
+            comment
+
+    </select>
 
     <update id="update">
         update

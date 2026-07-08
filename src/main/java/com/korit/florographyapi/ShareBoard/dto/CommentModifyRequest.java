@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class CommentModifyRequest {
         private Long id;
         private Long boardId;
-        private Long userId;
+        private String userId;
         private String body;
 
 
