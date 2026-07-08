@@ -35,7 +35,7 @@ public class ShareBoardService {
 //        return shareBoardMapper.selectByUserId(userId).stream().map(ShareBoard::toResponse).toList();
 //    }
     // 인기순위
-    public List<ShareBoardResponse> getRank(Long userId) {
+    public List<ShareBoardResponse> getRank(String userId) {
         return shareBoardMapper.selectRank(userId).stream().map(ShareBoard::toResponse).toList();
     }
 
@@ -43,5 +43,5 @@ public class ShareBoardService {
         shareBoardMapper.update(dto.toShareBoard());
     }
 
-    public void delete(Long id, Long userId) {shareBoardMapper.delete(id,userId);}
+    public void delete(Long id, String userId) {shareBoardMapper.delete(id,userId);}
 }
