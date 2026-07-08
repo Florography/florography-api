@@ -10,5 +10,4 @@ public interface HeartLetterMapper {
     int insert(HeartLetter heartLetter);
     List<HeartLetter> selectAllUserId(String userId);
     int update(HeartLetter heartLetter);
-
 }

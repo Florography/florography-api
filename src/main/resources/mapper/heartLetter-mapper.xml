@@ -39,21 +39,4 @@
         where
             user_id = #{userId}
     </select>
-    <select id="selectByUserId" resultType="com.korit.florographyapi.entity.HeartLetter">
-        select
-            id,
-            user_id,
-            title,
-            recipient,
-            body,
-            paper_theme,
-            font_size,
-            mood_idx,
-            created_at
-        from
-            heart_letter
-        where
-            user_id = #{userId}
-    </select>
-
 </mapper>

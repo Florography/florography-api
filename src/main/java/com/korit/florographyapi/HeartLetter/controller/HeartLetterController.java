@@ -8,7 +8,6 @@ import com.korit.florographyapi.dto.ApiResponse;
 import com.korit.florographyapi.dto.CreateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,14 +22,9 @@ public class HeartLetterController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<?>> getAll(@AuthenticationPrincipal String userId) {
-        return  ResponseEntity.ok(ApiResponse.success(heartLetterService.getAll(userId)));
+    public ResponseEntity<ApiResponse<?>> getAllUserId(@PathVariable String userId) {
+        return  ResponseEntity.ok(ApiResponse.success(heartLetterService.getAllUserId(userId)));
     }
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ApiResponse<?>> getUserId(@PathVariable Long id) {
-//        return ResponseEntity.ok(ApiResponse.success(heartLetterService.getUserId(id)));
-//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> modify(@PathVariable Long id, @RequestBody HeartLetterModifyRequest dto) {

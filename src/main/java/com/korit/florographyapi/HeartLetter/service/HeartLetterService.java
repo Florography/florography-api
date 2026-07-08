@@ -26,7 +26,7 @@ public class HeartLetterService {
                 .build();
     }
 
-    public List<HeartLetterResponse> getAll(String userId) {
+    public List<HeartLetterResponse> getAllUserId(String userId) {
         List<HeartLetterResponse> heartLetters = heartLetterMapper.selectAllUserId(userId)
                 .stream()
                 .map(HeartLetter::toResponse)
@@ -34,23 +34,6 @@ public class HeartLetterService {
         System.out.println(userId);
         return heartLetters;
     }
-//
-//    public HeartLetterResponse getUserId(String userId) {
-//        HeartLetter heartLetter = heartLetterMapper.selectByUserId(userId);
-//        if (heartLetter == null) {
-//            throw new RuntimeException("해당 유저의 편지를 찾을 수 없습니다.");
-//        }
-//        return HeartLetterResponse.builder()
-//                .userId(heartLetter.getUserId())
-//                .title(heartLetter.getTitle())
-//                .recipient(heartLetter.getRecipient())
-//                .body(heartLetter.getBody())
-//                .paperTheme(heartLetter.getPaperTheme())
-//                .fontSize(heartLetter.getFontSize())
-//                .moodIdx(heartLetter.getMoodIdx())
-//                .createdAt(heartLetter.getCreatedAt())
-//                .build();
-//    }
 
     public void modify(HeartLetterModifyRequest dto) {
         System.out.println("수정 요청 ID: " + dto.getId() + ", USER ID: " + dto.getUserId());
