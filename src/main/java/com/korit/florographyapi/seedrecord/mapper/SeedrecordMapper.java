@@ -10,4 +10,5 @@ public interface SeedrecordMapper {
     int insert(Seedrecord comment);
     List<Seedrecord> selectAllSeedrecord(Long userId);
     int update(Seedrecord comment);
+    List<Seedrecord> selectByUserId(String userId);
 }

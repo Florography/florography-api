@@ -8,11 +8,11 @@ import java.util.List;
 @Mapper
 public interface ShareBoardMapper {
     int insert(ShareBoard shareBoard);
-    List<ShareBoard> selectByUserId(Long userId);
+    List<ShareBoard> selectByUserId(String userId);
     List<ShareBoard> selectAll();
-    List<ShareBoard> selectRank(Long userId);
+    List<ShareBoard> selectRank(String userId);
     int update(ShareBoard shareBoard);
-    int delete(Long id, Long userId);
+    int delete(Long id, String userId);
 
 
 }

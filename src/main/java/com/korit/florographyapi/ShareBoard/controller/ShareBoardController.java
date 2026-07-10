@@ -22,6 +22,8 @@ public class ShareBoardController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<CreateResponse>> create(@RequestBody ShareBoardCreateRequest dto) {
+
+        System.out.println("프론트에서 넘어온 user_id: " + dto.getUserId());
         return ResponseEntity.ok(ApiResponse.success(shareBoardService.create(dto)));
     }
 
@@ -36,7 +38,7 @@ public class ShareBoardController {
 //    }
 
     @GetMapping("/rank")
-    public ResponseEntity<ApiResponse<List<ShareBoardResponse>>> getRank(@AuthenticationPrincipal Long userId) {
+    public ResponseEntity<ApiResponse<List<ShareBoardResponse>>> getRank(@AuthenticationPrincipal String userId) {
         return ResponseEntity.ok(ApiResponse.success(shareBoardService.getRank(userId)));
     }
 
@@ -46,7 +48,7 @@ public class ShareBoardController {
         return ResponseEntity.ok(ApiResponse.success("수정완료"));
     }
     @DeleteMapping("/{id}/{userId}")
-    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id, @PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id, @PathVariable String userId) {
         shareBoardService.delete(id, userId);
         return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }

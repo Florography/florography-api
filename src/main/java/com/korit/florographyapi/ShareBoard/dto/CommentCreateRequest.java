@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class CommentCreateRequest {
     private Long boardId;
-    private Long userId;
+    private String userId;
     private String body;
 
 

@@ -8,6 +8,7 @@ import com.korit.florographyapi.dto.CreateResponse;
 import com.korit.florographyapi.entity.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class CommentService {
     private final CommentMapper commentMapper;
 
+    @Transactional
     public CreateResponse create(CommentCreateRequest dto) {
         Comment comment = dto.toComment();
         commentMapper.insert(comment);
@@ -33,5 +35,5 @@ public class CommentService {
         commentMapper.update(dto.toComment());
     }
 
-    public void delete(Long boardId, Long userId, Long id ) {commentMapper.delete(boardId,userId, id);}
+    public void delete(Long boardId, String userId, Long id ) {commentMapper.delete(boardId,userId, id);}
 }
