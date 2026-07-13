@@ -1,5 +1,6 @@
-package com.korit.florographyapi.ShareBoard.mapper;
+package com.korit.florographyapi.shareboard.mapper;
 
+import com.korit.florographyapi.entity.BoardLike;
 import com.korit.florographyapi.entity.ShareBoard;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,6 +18,10 @@ public interface ShareBoardMapper {
     // ShareBoard 테이블의 like 컬럼 증감
     void increaseLikeCount(ShareBoard shareBoard);
     void decreaseLikeCount(ShareBoard shareBoard);
+
+    int insertBoardLike (BoardLike boardLike);
+    int deleteBoardLike (Long boardId, String userId);
+    BoardLike selectBoardLike (Long boardId, String userId);
 
 
 }

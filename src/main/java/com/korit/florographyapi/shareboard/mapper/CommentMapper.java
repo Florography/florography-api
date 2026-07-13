@@ -1,4 +1,4 @@
-package com.korit.florographyapi.ShareBoard.mapper;
+package com.korit.florographyapi.shareboard.mapper;
 
 import com.korit.florographyapi.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;

@@ -1,12 +1,13 @@
-package com.korit.florographyapi.ShareBoard.controller;
+package com.korit.florographyapi.shareboard.controller;
 
-import com.korit.florographyapi.ShareBoard.dto.ShareBoardCreateRequest;
-import com.korit.florographyapi.ShareBoard.dto.ShareBoardModifyRequest;
-import com.korit.florographyapi.ShareBoard.dto.ShareBoardResponse;
-import com.korit.florographyapi.ShareBoard.service.ShareBoardService;
+import com.korit.florographyapi.entity.BoardLike;
+import com.korit.florographyapi.shareboard.dto.BoardLikeCreateRequest;
+import com.korit.florographyapi.shareboard.dto.ShareBoardCreateRequest;
+import com.korit.florographyapi.shareboard.dto.ShareBoardModifyRequest;
+import com.korit.florographyapi.shareboard.dto.ShareBoardResponse;
+import com.korit.florographyapi.shareboard.service.ShareBoardService;
 import com.korit.florographyapi.dto.ApiResponse;
 import com.korit.florographyapi.dto.CreateResponse;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,30 +43,51 @@ public class ShareBoardController {
         return ResponseEntity.ok(ApiResponse.success(shareBoardService.getRank(userId)));
     }
 
+    //게시글 수정
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<?>> modify(@PathVariable Long userId, @RequestBody ShareBoardModifyRequest dto) {
         shareBoardService.modify(dto);
         return ResponseEntity.ok(ApiResponse.success("수정완료"));
     }
+    //게시글 삭제
     @DeleteMapping("/{id}/{userId}")
     public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id, @PathVariable String userId) {
         shareBoardService.delete(id, userId);
         return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }
 
+    //좋아요 증가
     @PutMapping("/{id}/up")
     public ResponseEntity<ApiResponse<?>> modifyLikeUp(@PathVariable Long id, @RequestBody ShareBoardModifyRequest dto) {
         shareBoardService.modifyLikeUP(dto);
         return ResponseEntity.ok(ApiResponse.success("좋아요 증가"));
     }
 
+    //좋아요 감소
     @PutMapping("/{id}/down")
     public ResponseEntity<ApiResponse<?>> modifyLikeDown(@PathVariable Long id, @RequestBody ShareBoardModifyRequest dto) {
         shareBoardService.modifyLikeDown(dto);
-        System.out.println(dto);
         return ResponseEntity.ok(ApiResponse.success("좋아요 감소"));
     }
 
+    // 좋아요 저장
+    @PostMapping("/boardlike")
+    public ResponseEntity<ApiResponse<CreateResponse>> createBoardLike (@RequestBody BoardLikeCreateRequest dto) {
+        return ResponseEntity.ok(ApiResponse.success(shareBoardService.boardLikeCreate(dto)));
+    }
+
+    //좋아요 삭제
+    @DeleteMapping("/boardlike/{boardId}/{userId}")
+    public ResponseEntity<ApiResponse<?>> deleteBoardLike (@PathVariable Long boardId, @PathVariable String userId) {
+        shareBoardService.deleteBoardLike(boardId, userId);
+        return ResponseEntity.ok(ApiResponse.success("좋아요 삭제완료"));
+    }
+
+    //좋아요 여부 출력
+    @GetMapping("/boardlike/{boardId}")
+    public ResponseEntity<ApiResponse<BoardLike>> getBoardLike (@PathVariable Long boardId,@AuthenticationPrincipal String userId) {
+        return ResponseEntity.ok(ApiResponse.success(shareBoardService.getBoardLike(boardId,userId)));
+    }
 
 
 }

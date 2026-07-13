@@ -1,22 +1,19 @@
-package com.korit.florographyapi.ShareBoard.dto;
+package com.korit.florographyapi.shareboard.dto;
 
-import com.korit.florographyapi.entity.Comment;
+import com.korit.florographyapi.entity.BoardLike;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class CommentCreateRequest {
+public class BoardLikeCreateRequest {
     private Long boardId;
     private String userId;
-    private String body;
 
-
-    public Comment toComment() {
-        return Comment.builder()
+    public BoardLike toBoardLike() {
+        return BoardLike.builder()
                 .boardId(boardId)
                 .userId(userId)
-                .body(body)
                 .createdAt(LocalDateTime.now())
                 .build();
     }

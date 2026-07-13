@@ -1,13 +1,14 @@
-package com.korit.florographyapi.ShareBoard.service;
+package com.korit.florographyapi.shareboard.service;
 
-import com.korit.florographyapi.ShareBoard.dto.ShareBoardCreateRequest;
-import com.korit.florographyapi.ShareBoard.dto.ShareBoardModifyRequest;
-import com.korit.florographyapi.ShareBoard.dto.ShareBoardResponse;
-import com.korit.florographyapi.ShareBoard.mapper.ShareBoardMapper;
+import com.korit.florographyapi.shareboard.dto.BoardLikeCreateRequest;
+import com.korit.florographyapi.shareboard.dto.ShareBoardCreateRequest;
+import com.korit.florographyapi.shareboard.dto.ShareBoardModifyRequest;
+import com.korit.florographyapi.shareboard.dto.ShareBoardResponse;
+import com.korit.florographyapi.shareboard.mapper.ShareBoardMapper;
 import com.korit.florographyapi.dto.CreateResponse;
+import com.korit.florographyapi.entity.BoardLike;
 import com.korit.florographyapi.entity.ShareBoard;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +54,25 @@ public class ShareBoardService {
     public void modifyLikeDown(ShareBoardModifyRequest dto) {
         shareBoardMapper.decreaseLikeCount(dto.toShareBoardLike());
     }
+
+    //좋아요클릭시  board_like 테이블에 추가
+    public CreateResponse boardLikeCreate (BoardLikeCreateRequest dto) {
+        BoardLike boardLike = dto.toBoardLike();
+        shareBoardMapper.insertBoardLike(boardLike);
+        return CreateResponse.builder()
+                .domainName("boardLike")
+                .createdIds(List.of(boardLike.getId()))
+                .build();
+    }
+    //좋아요 취소시 삭제
+    public void deleteBoardLike(Long boardId, String userId) {shareBoardMapper.deleteBoardLike(boardId, userId);}
+
+    // 좋아요 상태확인용 get
+    public BoardLike getBoardLike (Long boardId, String userId) {
+        return shareBoardMapper.selectBoardLike(boardId, userId);
+    }
+
+
+
 
 }

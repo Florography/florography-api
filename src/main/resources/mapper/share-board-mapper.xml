@@ -2,13 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace= "com.korit.florographyapi.ShareBoard.mapper.ShareBoardMapper" >
+<mapper namespace= "com.korit.florographyapi.shareboard.mapper.ShareBoardMapper" >
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into
             share_board(id, user_id, type_id, body, `like`, created_at)
         values
             (default, #{userId}, #{typeId}, #{body}, #{like}, #{createdAt})
+    </insert>
+    <!-- 좋아요 테이블 -->
+    <insert id="insertBoardLike">
+        insert into
+            board_like(id, board_id, user_id, created_at)
+        values
+            (default, #{boardId}, #{userId}, #{createAt}
     </insert>
     <!--게시글 아이디로 본인꺼 출력-->
     <select id="selectByUserId" resultType="com.korit.florographyapi.entity.ShareBoard">
@@ -70,6 +77,20 @@
             created_at desc
             limit 5
     </select>
+<!--  좋아요 단일행 찾기   -->
+    <select id="selectBoardLike" resultType="com.korit.florographyapi.entity.BoardLike">
+        select
+            id,
+            board_id,
+            user_id,
+            created_at,
+        from
+            board_like
+        where
+            board_id = #{boardId}
+        and
+            user_id = #{userId}
+    </select>
 
     <update id="update">
         update
@@ -91,12 +112,23 @@
         and
             user_id = #{userId}
     </delete>
-
+<!--  좋아요 취소시 삭제  -->
+    <delete id="deleteBoardLike">
+        delete
+        from
+            board_like
+        where
+            board_id = #{boardId}
+        and
+            user_id = #{userId}
+    </delete>
+<!--  좋아요 증가  -->
     <update id="increaseLikeCount">
         update share_board
         set `like` = `like` + 1
         where id = #{id}
     </update>
+<!--  좋아요 감소  -->
     <update id="decreaseLikeCount">
         update share_board
         set `like` = `like` - 1
