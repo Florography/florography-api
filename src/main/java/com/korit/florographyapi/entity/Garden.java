@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Garden {
     private Long id;
+    private String userId;
     private String name;
-    private int themeIdx;
-    private String slots;
+    private String garden_data;
+    private String gardenImage;     // null 일수도 있고
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String gardenImage;     // null 일수도 있고
 }

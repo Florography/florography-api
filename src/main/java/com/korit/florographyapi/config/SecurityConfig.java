@@ -58,7 +58,7 @@ public class SecurityConfig {
         );
 
         http.authorizeHttpRequests(req -> {
-            req.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/auth/**").permitAll();
+            req.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/auth/**", "/api/images/**").permitAll();
 
 //            req.requestMatchers("/api/shareboard/**").permitAll(); //토큰을 없이 인증위해서
 
