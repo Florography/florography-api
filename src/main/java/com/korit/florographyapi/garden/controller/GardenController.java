@@ -19,4 +19,14 @@ public class GardenController {
         System.out.println("createGarden: controller ==" + gardenCreateRequest);
         return ResponseEntity.ok(gardenService.createGarden(gardenCreateRequest));
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<?>> getAllGardens(@RequestParam String userId) {
+        return ResponseEntity.ok(gardenService.getAllGardens(userId));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> getGardenById(@PathVariable Long id) {
+        return ResponseEntity.ok(gardenService.getGardenById(id));
+    }
 }

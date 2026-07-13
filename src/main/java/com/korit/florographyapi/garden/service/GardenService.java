@@ -14,13 +14,15 @@ public class GardenService {
 
     public ApiResponse<?> createGarden(GardenCreateRequest dto) {
         System.out.println("createGarden: Service - " + dto);
-
-        // 저장 구현
         gardenMapper.insertGardenData(dto);
-//        System.out.println("Hello");
-        return ApiResponse.success(gardenMapper);
+        return ApiResponse.success(null);
     }
 
-//    public ApiResponse<?> createGarden
+    public ApiResponse<?> getAllGardens(String userId) {
+        return ApiResponse.success(gardenMapper.selectAllGardens(userId));
+    }
 
+    public ApiResponse<?> getGardenById(Long id) {
+        return ApiResponse.success(gardenMapper.selectGardenById(id));
+    }
 }
