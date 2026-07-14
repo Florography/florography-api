@@ -53,5 +53,19 @@ public class ShareBoardController {
         return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }
 
+    @PutMapping("/{id}/up")
+    public ResponseEntity<ApiResponse<?>> modifyLikeUp(@PathVariable Long id, @RequestBody ShareBoardModifyRequest dto) {
+        shareBoardService.modifyLikeUP(dto);
+        return ResponseEntity.ok(ApiResponse.success("좋아요 증가"));
+    }
+
+    @PutMapping("/{id}/down")
+    public ResponseEntity<ApiResponse<?>> modifyLikeDown(@PathVariable Long id, @RequestBody ShareBoardModifyRequest dto) {
+        shareBoardService.modifyLikeDown(dto);
+        System.out.println(dto);
+        return ResponseEntity.ok(ApiResponse.success("좋아요 감소"));
+    }
+
+
 
 }

@@ -12,6 +12,7 @@ public class ShareBoardModifyRequest {
     private short typeId;
     private String body;
     private Long like;
+    private boolean isDelete; //"true"면 취소(-1), "false"면 좋아요(+1)로 쓸 변수 추가
 
     public ShareBoard toShareBoard() {
         return ShareBoard.builder()
@@ -19,6 +20,13 @@ public class ShareBoardModifyRequest {
                 .userId(userId)
                 .body(body)
                 .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public ShareBoard toShareBoardLike() {
+        return ShareBoard.builder()
+                .id(id)
+                .like(like)
                 .build();
     }
 }

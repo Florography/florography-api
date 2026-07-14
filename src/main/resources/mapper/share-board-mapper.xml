@@ -81,6 +81,7 @@
         and
             user_id = #{userId}
     </update>
+
     <delete id="delete">
         delete
         from
@@ -90,5 +91,16 @@
         and
             user_id = #{userId}
     </delete>
+
+    <update id="increaseLikeCount">
+        update share_board
+        set `like` = `like` + 1
+        where id = #{id}
+    </update>
+    <update id="decreaseLikeCount">
+        update share_board
+        set `like` = `like` - 1
+        where id = #{id}
+    </update>
 
 </mapper>

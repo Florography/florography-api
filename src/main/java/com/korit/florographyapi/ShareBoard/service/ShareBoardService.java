@@ -44,4 +44,14 @@ public class ShareBoardService {
     }
 
     public void delete(Long id, String userId) {shareBoardMapper.delete(id,userId);}
+
+    //좋아요 증가 메서드
+    public void modifyLikeUP(ShareBoardModifyRequest dto) {
+        shareBoardMapper.increaseLikeCount(dto.toShareBoardLike());
+    }
+    //좋아요 취소 메서드
+    public void modifyLikeDown(ShareBoardModifyRequest dto) {
+        shareBoardMapper.decreaseLikeCount(dto.toShareBoardLike());
+    }
+
 }

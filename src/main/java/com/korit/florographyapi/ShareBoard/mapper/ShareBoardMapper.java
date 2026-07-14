@@ -14,5 +14,9 @@ public interface ShareBoardMapper {
     int update(ShareBoard shareBoard);
     int delete(Long id, String userId);
 
+    // ShareBoard 테이블의 like 컬럼 증감
+    void increaseLikeCount(ShareBoard shareBoard);
+    void decreaseLikeCount(ShareBoard shareBoard);
+
 
 }
