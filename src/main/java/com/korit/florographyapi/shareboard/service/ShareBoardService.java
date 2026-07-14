@@ -11,6 +11,7 @@ import com.korit.florographyapi.entity.ShareBoard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,26 +47,37 @@ public class ShareBoardService {
 
     public void delete(Long id, String userId) {shareBoardMapper.delete(id,userId);}
 
-    //좋아요 증가 메서드
-    public void modifyLikeUP(ShareBoardModifyRequest dto) {
-        shareBoardMapper.increaseLikeCount(dto.toShareBoardLike());
-    }
-    //좋아요 취소 메서드
-    public void modifyLikeDown(ShareBoardModifyRequest dto) {
-        shareBoardMapper.decreaseLikeCount(dto.toShareBoardLike());
-    }
 
-    //좋아요클릭시  board_like 테이블에 추가
+    //좋아요클릭시  board_like 테이블에 추가 및 share_board like 1증가
     public CreateResponse boardLikeCreate (BoardLikeCreateRequest dto) {
-        BoardLike boardLike = dto.toBoardLike();
+        BoardLike existingLike = shareBoardMapper.selectBoardLike(dto.getBoardId(), dto.getUserId());
+
+        if (existingLike != null) {
+            return CreateResponse.builder()
+                    .domainName("boardlike")
+                    .createdIds(List.of(existingLike.getId()))
+                    .build();
+        }
+
+        BoardLike boardLike = BoardLike.builder()
+                .boardId(dto.getBoardId())
+                .userId(dto.getUserId())
+                .createdAt(LocalDateTime.now())
+                .build();
+
         shareBoardMapper.insertBoardLike(boardLike);
+
+        shareBoardMapper.increaseLikeCount(dto.getBoardId());
         return CreateResponse.builder()
                 .domainName("boardLike")
-                .createdIds(List.of(boardLike.getId()))
+                .createdIds(List.of(dto.getBoardId()))
                 .build();
     }
-    //좋아요 취소시 삭제
-    public void deleteBoardLike(Long boardId, String userId) {shareBoardMapper.deleteBoardLike(boardId, userId);}
+    //좋아요 취소시 삭제 및 share_board like 1감소
+    public void deleteBoardLike(Long boardId, String userId) {
+        shareBoardMapper.deleteBoardLike(boardId, userId);
+        shareBoardMapper.decreaseLikeCount(boardId);
+    }
 
     // 좋아요 상태확인용 get
     public BoardLike getBoardLike (Long boardId, String userId) {

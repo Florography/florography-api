@@ -56,23 +56,24 @@ public class ShareBoardController {
         return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }
 
-    //좋아요 증가
-    @PutMapping("/{id}/up")
-    public ResponseEntity<ApiResponse<?>> modifyLikeUp(@PathVariable Long id, @RequestBody ShareBoardModifyRequest dto) {
-        shareBoardService.modifyLikeUP(dto);
-        return ResponseEntity.ok(ApiResponse.success("좋아요 증가"));
-    }
-
-    //좋아요 감소
-    @PutMapping("/{id}/down")
-    public ResponseEntity<ApiResponse<?>> modifyLikeDown(@PathVariable Long id, @RequestBody ShareBoardModifyRequest dto) {
-        shareBoardService.modifyLikeDown(dto);
-        return ResponseEntity.ok(ApiResponse.success("좋아요 감소"));
-    }
+//    //좋아요 증가
+//    @PutMapping("/{boardId}/up")
+//    public ResponseEntity<ApiResponse<?>> modifyLikeUp(@PathVariable Long boardId, @RequestBody ShareBoardModifyRequest dto) {
+//        shareBoardService.boardLikeCreate(dto);
+//        return ResponseEntity.ok(ApiResponse.success("좋아요 증가"));
+//    }
+//
+//    //좋아요 감소
+//    @PutMapping("/{boardId}/down")
+//    public ResponseEntity<ApiResponse<?>> modifyLikeDown(@PathVariable Long boardId, @RequestBody ShareBoardModifyRequest dto) {
+//        shareBoardService.deleteBoardLike(dto);
+//        return ResponseEntity.ok(ApiResponse.success("좋아요 감소"));
+//    }
 
     // 좋아요 저장
     @PostMapping("/boardlike")
     public ResponseEntity<ApiResponse<CreateResponse>> createBoardLike (@RequestBody BoardLikeCreateRequest dto) {
+        System.out.println("넘어온 DTO 값 확인" + dto.toString());
         return ResponseEntity.ok(ApiResponse.success(shareBoardService.boardLikeCreate(dto)));
     }
 
@@ -83,9 +84,9 @@ public class ShareBoardController {
         return ResponseEntity.ok(ApiResponse.success("좋아요 삭제완료"));
     }
 
-    //좋아요 여부 출력
+    //좋아요 여부 호출
     @GetMapping("/boardlike/{boardId}")
-    public ResponseEntity<ApiResponse<BoardLike>> getBoardLike (@PathVariable Long boardId,@AuthenticationPrincipal String userId) {
+    public ResponseEntity<ApiResponse<BoardLike>> getBoardLike (@PathVariable Long boardId,@RequestParam String userId) {
         return ResponseEntity.ok(ApiResponse.success(shareBoardService.getBoardLike(boardId,userId)));
     }
 
