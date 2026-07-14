@@ -11,14 +11,20 @@
     </insert>
 
     <select id="selectAllGardens" resultType="com.korit.florographyapi.entity.Garden">
-        select id, user_id as userId, name, garden_data as garden_data, garden_image as gardenImage, created_at as createdAt, updated_at as updatedAt
+        select
+            id, user_id as userId,
+            name,
+            garden_data as gardenData,
+            garden_image as gardenImage,
+            created_at as createdAt,
+            updated_at as updatedAt
         from garden_data
         where user_id = #{userId}
         order by created_at desc
     </select>
 
     <select id="selectGardenById" parameterType="Long" resultType="com.korit.florographyapi.entity.Garden">
-        select id, user_id as userId, name, garden_data as garden_data, garden_image as gardenImage, created_at as createdAt, updated_at as updatedAt
+        select id, user_id as userId, name, garden_data as gardenData, garden_image as gardenImage, created_at as createdAt, updated_at as updatedAt
         from garden_data
         where id = #{id}
     </select>

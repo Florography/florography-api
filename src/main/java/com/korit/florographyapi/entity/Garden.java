@@ -15,8 +15,8 @@ public class Garden {
     private Long id;
     private String userId;
     private String name;
-    private String garden_data;
-    private String gardenImage;     // null 일수도 있고
+    private String gardenData;
+    private String gardenImage;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

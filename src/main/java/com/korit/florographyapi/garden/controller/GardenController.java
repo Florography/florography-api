@@ -6,6 +6,7 @@ import com.korit.florographyapi.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,12 +22,14 @@ public class GardenController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<?>> getAllGardens(@RequestParam String userId) {
-        return ResponseEntity.ok(gardenService.getAllGardens(userId));
+    public ResponseEntity<ApiResponse<?>> getAllGardens(Authentication authentication) {
+        System.out.println("getAllGarden: authentication == " + authentication );
+        return ResponseEntity.ok(gardenService.getAllGardens(authentication));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> getGardenById(@PathVariable Long id) {
+        System.out.println("getAllGardenId");
         return ResponseEntity.ok(gardenService.getGardenById(id));
     }
 }
