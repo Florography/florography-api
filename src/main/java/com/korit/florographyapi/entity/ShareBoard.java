@@ -1,7 +1,7 @@
 package com.korit.florographyapi.entity;
 
 
-import com.korit.florographyapi.ShareBoard.dto.ShareBoardResponse;
+import com.korit.florographyapi.shareboard.dto.ShareBoardResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

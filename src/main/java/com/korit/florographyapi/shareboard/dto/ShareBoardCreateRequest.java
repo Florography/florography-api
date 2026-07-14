@@ -1,6 +1,5 @@
-package com.korit.florographyapi.ShareBoard.dto;
+package com.korit.florographyapi.shareboard.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.korit.florographyapi.entity.ShareBoard;
 import lombok.Data;
 

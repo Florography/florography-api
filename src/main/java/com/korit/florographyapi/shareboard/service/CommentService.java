@@ -1,9 +1,9 @@
-package com.korit.florographyapi.ShareBoard.service;
+package com.korit.florographyapi.shareboard.service;
 
-import com.korit.florographyapi.ShareBoard.dto.CommentCreateRequest;
-import com.korit.florographyapi.ShareBoard.dto.CommentModifyRequest;
-import com.korit.florographyapi.ShareBoard.dto.CommentResponse;
-import com.korit.florographyapi.ShareBoard.mapper.CommentMapper;
+import com.korit.florographyapi.shareboard.dto.CommentCreateRequest;
+import com.korit.florographyapi.shareboard.dto.CommentModifyRequest;
+import com.korit.florographyapi.shareboard.dto.CommentResponse;
+import com.korit.florographyapi.shareboard.mapper.CommentMapper;
 import com.korit.florographyapi.dto.CreateResponse;
 import com.korit.florographyapi.entity.Comment;
 import lombok.RequiredArgsConstructor;
