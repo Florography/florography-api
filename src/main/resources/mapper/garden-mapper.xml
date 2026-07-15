@@ -9,6 +9,15 @@
     <insert id="insertGardenData" parameterType="com.korit.florographyapi.garden.dto.GardenCreateRequest">
         insert into garden_data values (default, #{userId}, #{gardenName}, #{gardenData}, #{gardenImage}, #{createdAt}, now())
     </insert>
+    <update id="saveGarden">
+        update
+            garden_data
+        set
+            garden_data = #{gardenData},
+            updated_at = now()
+        where
+            id = #{id}
+    </update>
 
     <select id="selectAllGardens" resultType="com.korit.florographyapi.entity.Garden">
         select

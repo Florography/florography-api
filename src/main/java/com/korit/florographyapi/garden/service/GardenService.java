@@ -4,6 +4,7 @@ import com.korit.florographyapi.dto.ApiResponse;
 import com.korit.florographyapi.entity.Garden;
 import com.korit.florographyapi.entity.User;
 import com.korit.florographyapi.garden.dto.GardenCreateRequest;
+import com.korit.florographyapi.garden.dto.GardenSaveRequest;
 import com.korit.florographyapi.garden.mapper.GardenMapper;
 import com.korit.florographyapi.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,12 @@ public class GardenService {
 
     public ApiResponse<?> getGardenById(Long id) {
         return ApiResponse.success(gardenMapper.selectGardenById(id));
+    }
+
+    public ApiResponse<?> saveGarden(GardenSaveRequest dto) {
+//        System.out.println("======================================");
+        gardenMapper.saveGarden(dto);
+//        System.out.println("======================================");
+        return ApiResponse.success();
     }
 }
