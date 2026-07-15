@@ -34,6 +34,7 @@ public class SeedrecordController {
 
     @GetMapping("/getuser")
     public ResponseEntity<ApiResponse<List<SeedrecordResponse>>> getByUserId(@RequestParam String userId) {
+        System.out.println("getUsers");
         return ResponseEntity.ok(ApiResponse.success(seedrecordService.getByUserId(userId)));
     }
 
