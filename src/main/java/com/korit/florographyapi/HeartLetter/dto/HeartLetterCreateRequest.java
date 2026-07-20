@@ -13,7 +13,6 @@ public class HeartLetterCreateRequest {
     private String body;
     private int paperTheme;
     private int fontSize;
-    private int moodIdx;
     private LocalDate createdAt;
 
     public HeartLetter toHeartLetter() {
@@ -24,7 +23,6 @@ public class HeartLetterCreateRequest {
                 .body(body)
                 .paperTheme(paperTheme)
                 .fontSize(fontSize)
-                .moodIdx(moodIdx)
                 .createdAt(LocalDate.now())
                 .build();
 

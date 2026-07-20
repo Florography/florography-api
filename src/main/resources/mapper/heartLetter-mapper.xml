@@ -16,8 +16,7 @@
             recipient = #{recipient},
             body = #{body},
             paper_theme = #{paperTheme},
-            font_size = #{fontSize},
-            mood_idx = #{moodIdx}
+            font_size = #{fontSize}
         where
             id = #{id}
         and
@@ -32,7 +31,6 @@
             body,
             paper_theme,
             font_size,
-            mood_idx,
             created_at
         from
             heart_letter

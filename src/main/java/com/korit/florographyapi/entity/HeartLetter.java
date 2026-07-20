@@ -20,7 +20,6 @@ public class HeartLetter {
     private String body;
     private int paperTheme;
     private int fontSize;
-    private int moodIdx;
     private LocalDate createdAt;
 
     public HeartLetterResponse toResponse() {
@@ -31,7 +30,6 @@ public class HeartLetter {
                 .body(body)
                 .paperTheme(paperTheme)
                 .fontSize(fontSize)
-                .moodIdx(moodIdx)
                 .createdAt(createdAt)
                 .build();
     }

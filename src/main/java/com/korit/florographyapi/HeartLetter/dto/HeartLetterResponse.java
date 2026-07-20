@@ -18,6 +18,5 @@ public class HeartLetterResponse {
     private String body;
     private int paperTheme;
     private int fontSize;
-    private int moodIdx;
     private LocalDate createdAt;
 }
