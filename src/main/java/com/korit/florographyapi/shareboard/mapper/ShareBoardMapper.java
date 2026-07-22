@@ -16,12 +16,12 @@ public interface ShareBoardMapper {
     int delete(Long id, String userId);
 
     // ShareBoard 테이블의 like 컬럼 증감
-    void increaseLikeCount(Long boardId);
-    void decreaseLikeCount(Long boardId);
+//    void increaseLikeCount(Long boardId);
+//    void decreaseLikeCount(Long boardId);
 
     int insertBoardLike (BoardLike boardLike);
     int deleteBoardLike (Long boardId, String userId);
     BoardLike selectBoardLike (Long boardId, String userId);
-
+    int selectLikeCountByBoardId(Long boardId);
 
 }

@@ -31,7 +31,7 @@
             user_id,
             type_id,
             body,
-            `like`,
+            (SELECT COUNT(*) FROM board_like WHERE board_id = share_board.id) as `like`,
             created_at
         FROM
             share_board
@@ -54,7 +54,7 @@
             user_id,
             type_id,
             body,
-            `like`,
+            (SELECT COUNT(*) FROM board_like WHERE board_id = share_board.id) as `like`,
             created_at
         from
             share_board
@@ -93,17 +93,17 @@
     </delete>
 
 <!--  좋아요 증가  -->
-    <update id="increaseLikeCount">
-        update share_board
-        set `like` = `like` + 1
-        where id = #{boardId}
-    </update>
+<!--    <update id="increaseLikeCount">-->
+<!--        update share_board-->
+<!--        set `like` = `like` + 1-->
+<!--        where id = #{boardId}-->
+<!--    </update>-->
 <!--  좋아요 감소  -->
-    <update id="decreaseLikeCount">
-        update share_board
-        set `like` = `like` - 1
-        where id = #{boardId}
-    </update>
+<!--    <update id="decreaseLikeCount">-->
+<!--        update share_board-->
+<!--        set `like` = `like` - 1-->
+<!--        where id = #{boardId}-->
+<!--    </update>-->
     <!-- 좋아요 테이블 -->
     <insert id="insertBoardLike">
         insert into
@@ -125,6 +125,15 @@
         and
             user_id = #{userId}
         limit 1
+    </select>
+    <!-- board_like count   -->
+    <select id="selectLikeCountByBoardId" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            board_like
+        where
+            board_id = #{boardId}
     </select>
     <!--  좋아요 취소시 삭제  -->
     <delete id="deleteBoardLike">

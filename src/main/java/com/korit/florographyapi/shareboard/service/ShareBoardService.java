@@ -67,7 +67,6 @@ public class ShareBoardService {
 
         shareBoardMapper.insertBoardLike(boardLike);
 
-        shareBoardMapper.increaseLikeCount(dto.getBoardId());
         return CreateResponse.builder()
                 .domainName("boardLike")
                 .createdIds(List.of(dto.getBoardId()))
@@ -76,12 +75,16 @@ public class ShareBoardService {
     //좋아요 취소시 삭제 및 share_board like 1감소
     public void deleteBoardLike(Long boardId, String userId) {
         shareBoardMapper.deleteBoardLike(boardId, userId);
-        shareBoardMapper.decreaseLikeCount(boardId);
     }
 
     // 좋아요 상태확인용 get
     public BoardLike getBoardLike (Long boardId, String userId) {
         return shareBoardMapper.selectBoardLike(boardId, userId);
+    }
+
+    // board_like board_id 별 좋아요 카운트
+    public int getLikeCount(Long boardId) {
+        return shareBoardMapper.selectLikeCountByBoardId(boardId);
     }
 
 
